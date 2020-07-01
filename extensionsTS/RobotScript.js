@@ -1,5 +1,5 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 (function (factory) {
     if (typeof module === "object" && typeof module.exports === "object") {
@@ -7,13 +7,20 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "../release/go", "./Robot"], factory);
+        define(["require", "exports", "../release/go.js", "./Robot.js"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var go = require("../release/go");
-    var Robot_1 = require("./Robot");
+    /*
+    * This is an extension and not part of the main GoJS library.
+    * Note that the API for this class may change with any version, even point releases.
+    * If you intend to use an extension in production, you should copy the code to your own source directory.
+    * Extensions can be found in the GoJS kit under the extensions or extensionsTS folders.
+    * See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
+    */
+    var go = require("../release/go.js");
+    var Robot_js_1 = require("./Robot.js");
     var robot; // this global variable will hold an instance of the Robot class for myDiagram
     var myDiagram;
     var myPalette;
@@ -62,7 +69,7 @@
                 'undoManager.isEnabled': true
             });
         // a shared Robot that can be used by all commands for this one Diagram
-        robot = new Robot_1.Robot(myDiagram); // defined in Robot.js
+        robot = new Robot_js_1.Robot(myDiagram); // defined in Robot.js
         // initialize the Palette that is on the left side of the page
         myPalette =
             $(go.Palette, 'myPaletteDiv', // must name or refer to the DIV HTML element

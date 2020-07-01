@@ -5,7 +5,7 @@
   <title>Drawing Commands</title>
   <meta name="description" content="TypeScript: The DrawCommandHandler extension implements various commands for aligning and rotating objects and for handling arrow keys to select or shift." />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Copyright 1998-2019 by Northwoods Software Corporation. -->
+  <!-- Copyright 1998-2020 by Northwoods Software Corporation. -->
 
   <script src="../samples/assets/require.js"></script>
   <script src="../assets/js/goSamples.js"></script> <!-- this is only for the GoJS Samples framework -->
@@ -26,6 +26,8 @@
         document.getElementById("90").onclick = app.rotate90;
         document.getElementById("-90").onclick = app.rotateNeg90;
         document.getElementById("180").onclick = app.rotate180;
+        document.getElementById("front").onclick = app.front;
+        document.getElementById("back").onclick = app.back;
         document.getElementById("move").onclick = app.arrowMode;
         document.getElementById("select").onclick = app.arrowMode;
         document.getElementById("scroll").onclick = app.arrowMode;
@@ -56,6 +58,10 @@
       <button id="-90">-90°</button>
       <button id="180">180°</button>
       </br>
+      Z-Order:
+      <button id="front">Pull to Front</button>
+      <button id="back">Push to Back</button>
+      </br>
       Arrow Mode:
       <input type="radio" name="arrow" id="move" checked="checked">Move</input>
       <input type="radio" name="arrow" id="select">Select</input>
@@ -66,7 +72,7 @@
       It allows the user to position selected Parts in a diagram relative to each other,
       overrides <a>CommandHandler.doKeyDown</a> to allow handling the arrow keys in additional manners,
       and uses a "paste offset" so that pasting objects will cascade them rather than place them on top of one another.
-      It is defined in its own file, as <a href="DrawCommandHandler.js">DrawCommandHandler.js</a>.
+      It is defined in its own file, as <a href="DrawCommandHandler.ts">DrawCommandHandler.ts</a>.
     </p>
     <p>
       The above buttons can be used to align Parts, rotate Parts, or change the behavior of the arrow keys.

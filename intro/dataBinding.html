@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GoJS Data Binding -- Northwoods Software</title>
-  <!-- Copyright 1998-2019 by Northwoods Software Corporation. -->
+  <!-- Copyright 1998-2020 by Northwoods Software Corporation. -->
   <script src="../release/go.js"></script>
   <script src="goIntro.js"></script>
 </head>
@@ -30,6 +30,11 @@ However data binding offers a declarative way to specify such behavior just by s
 Trying to bind a non-existent property of a <a>GraphObject</a> will probably result in a warning or error
 that you can see in the console log.  Always check the console log for any kinds of potential exceptions that
 are normally suppressed by the binding system.
+</p>
+<p>
+Data bindings are used to keep <a>GraphObject</a> properties in sync with their <a>Part</a>'s data's properties.
+They are not used to establish or maintain relationships between Parts.  Each kind of <a>Model</a> has its
+own methods for declaring the relationships between parts.
 </p>
 
 <h2 id="RelationshipsOfPartsAndDataAndBinding">The Relationships of Parts and Data and Binding</h2>
@@ -513,7 +518,9 @@ For fun, this modification occurs about twice a second.
 
 <h2 id="ChangingGraphStructure">Changing graph structure</h2>
 <p>
-For data properties that the model knows about, such as "to" or "from" for link data,
+Data binding is not used to establish relationships between parts.
+For data properties that a particular model knows about,
+such as "to" or "from" for link data in a <a>GraphLinksModel</a>,
 you must call the appropriate model methods in order to modify the data property.
 Modifying a data property directly without calling the appropriate model method
 may cause inconsistencies or undefined behavior.
@@ -536,6 +543,10 @@ For link data, the model methods are
 <p>
 This example changes the "to" property of a link data, causing the link to
 connect to a different node.
+This example uses the default Link template, which does not have any
+data bindings.
+The change in the link relationship is accomplished by calling a model method,
+not via a data binding.
 </p>
 <pre class="lang-js" id="changeLinkTo">
   diagram.nodeTemplate =

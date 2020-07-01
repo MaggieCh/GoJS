@@ -1,6 +1,6 @@
 'use strict';
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 
 // These are the definitions for all of the predefined buttons.
@@ -325,7 +325,7 @@ go.GraphObject.defineBuilder('ToolTip', function (args) {
     {
       isShadowed: true,
       shadowColor: 'rgba(0, 0, 0, .4)',
-      shadowOffset: new Point(0, 3),
+      shadowOffset: new go.Point(0, 3),
       shadowBlur: 5
     },
     go.GraphObject.make(go.Shape,
@@ -336,8 +336,8 @@ go.GraphObject.defineBuilder('ToolTip', function (args) {
         parameter2: 1,
         fill: '#F5F5F5',
         stroke: '#F0F0F0',
-        spot1: new Spot(0, 0, 4, 6),
-        spot2: new Spot(1, 1, -4, -4)
+        spot1: new go.Spot(0, 0, 4, 6),
+        spot2: new go.Spot(1, 1, -4, -4)
       }
     )
   );
@@ -359,10 +359,10 @@ go.GraphObject.defineBuilder('ToolTip', function (args) {
 go.GraphObject.defineBuilder('ContextMenu', function (args) {
   var ad = go.GraphObject.make(go.Adornment, 'Vertical',
     {
-      background: useBackground ? '#F5F5F5' : null,
+      background: '#F5F5F5',
       isShadowed: true,
       shadowColor: 'rgba(0, 0, 0, .4)',
-      shadowOffset: new Point(0, 3),
+      shadowOffset: new go.Point(0, 3),
       shadowBlur: 5
     },
     // don't set the background if the ContextMenu is adorning something and there's a Placeholder
@@ -456,6 +456,7 @@ go.GraphObject.defineBuilder('PanelExpanderButton', function (args) {
     if (elt !== null) {
       var pan = elt.findObject(eltname);
       if (pan !== null) {
+        e.handled = true;
         diagram.startTransaction('Collapse/Expand Panel');
         pan.visible = !pan.visible;
         diagram.commitTransaction('Collapse/Expand Panel');

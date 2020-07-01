@@ -18,9 +18,12 @@ module.exports = {
         libraryTarget: 'window',
         library: 'gfp'
     },
-    externals:[
+    optimization: {
+        minimize: false
+    },
+    externals: [
         {
-            '../../../release/go': 'go'
+            'gojs': 'go'
         }
     ],
     module: {
@@ -32,6 +35,7 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.BannerPlugin("Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.")
         ////new UglifyJSPlugin({ sourceMap: true })
     ]
 };

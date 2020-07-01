@@ -1,10 +1,18 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 
-import * as go from '../release/go';
-import './Figures';
-import { SnapLinkReshapingTool } from './SnapLinkReshapingTool';
+/*
+* This is an extension and not part of the main GoJS library.
+* Note that the API for this class may change with any version, even point releases.
+* If you intend to use an extension in production, you should copy the code to your own source directory.
+* Extensions can be found in the GoJS kit under the extensions or extensionsTS folders.
+* See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
+*/
+
+import * as go from '../release/go.js';
+import './Figures.js';
+import { SnapLinkReshapingTool } from './SnapLinkReshapingTool.js';
 
 let myDiagram: go.Diagram;
 let myPalette: go.Diagram;
@@ -174,4 +182,9 @@ function loadDiagramProperties() {
   // set Diagram.initialPosition, not Diagram.position, to handle initialization side-effects
   const pos = (myDiagram.model.modelData as any).position;
   if (pos) myDiagram.initialPosition = go.Point.parse(pos);
+}
+
+export function toggleAvoidsNodes(e: MouseEvent) {
+  const tool = myDiagram.toolManager.linkReshapingTool as SnapLinkReshapingTool;
+  if (tool !== null) tool.avoidsNodes = (e.target as HTMLInputElement).checked;
 }

@@ -1,10 +1,18 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 
-import * as go from '../release/go';
-import './Figures';
-import { PortShiftingTool } from './PortShiftingTool';
+/*
+* This is an extension and not part of the main GoJS library.
+* Note that the API for this class may change with any version, even point releases.
+* If you intend to use an extension in production, you should copy the code to your own source directory.
+* Extensions can be found in the GoJS kit under the extensions or extensionsTS folders.
+* See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
+*/
+
+import * as go from '../release/go.js';
+import './Figures.js';
+import { PortShiftingTool } from './PortShiftingTool.js';
 
 const red: string = 'orangered';  // 0 or false
 const green: string = 'forestgreen';  // 1 or true
@@ -310,13 +318,13 @@ function doNor(node: go.Node) {
 function doXor(node: go.Node) {
   let truecount = 0;
   node.findLinksInto().each(function(link) { if (linkIsTrue(link)) truecount++; });
-  const color = truecount % 2 === 0 ? green : red;
+  const color = truecount % 2 !== 0 ? green : red;
   setOutputLinks(node, color);
 }
 function doXnor(node: go.Node) {
   let truecount = 0;
   node.findLinksInto().each(function(link) { if (linkIsTrue(link)) truecount++; });
-  const color = truecount % 2 !== 0 ? green : red;
+  const color = truecount % 2 === 0 ? green : red;
   setOutputLinks(node, color);
 }
 

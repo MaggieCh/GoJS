@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GoJS Panels -- Northwoods Software</title>
-  <!-- Copyright 1998-2019 by Northwoods Software Corporation. -->
+  <!-- Copyright 1998-2020 by Northwoods Software Corporation. -->
   <script src="../release/go.js"></script>
   <script src="goIntro.js"></script>
 </head>
@@ -49,7 +49,7 @@ Thus these examples make use of Parts as top-level objects whereas within a Node
 </p>
 <p>
   Panels have no visual elements of their own, so to display their size the
-  <a>GraphObject.background</a> or <a>GraphObject.areaBackground</a> are often used.
+  <a>GraphObject.background</a> is often used.
   Panels also have <a>Panel.padding</a> in addition to <a>GraphObject.margin</a>.
   Unlike margin, backgrounds cover padding. Setting a padding when the Panel is constrained
   in size will reduce the total area that it has to arrange its elements. Setting a margin
@@ -817,6 +817,8 @@ depending on the size and alignment of those other TextBlocks.
 <p>
   Spot Panels can set <a>Panel.isClipping</a> to true to use the main Panel element as a clipping area instead of a drawn Shape.
   If used, the main element must be a Shape and its stroke and fill will not be drawn.
+  When <a>Panel.isClipping</a> is true, the Spot panel will size itself to be the <strong>intersection</strong> of the main element bounds and
+  all other elements' bounds, rather than the union of these bounds.
 </p>
 <p>
 Example:

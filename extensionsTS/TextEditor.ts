@@ -1,8 +1,12 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 
-import * as go from '../release/go';
+// This is the definitions of the predefined text editor used by TextEditingTool
+// when you set or bind TextBlock.editable to true.
+// You do not need to load this file in order to use in-place text editing.
+
+import * as go from '../release/go.js';
 
 // HTML + JavaScript text editor menu, made with HTMLInfo
 // This is a re-implementation of the default text editor
@@ -74,10 +78,13 @@ import * as go from '../release/go';
 
   TextEditor.mainElement = textarea; // to reference it more easily
 
+  (TextEditor as any).tool = null; // Initialize
+
   // used to be in doActivate
   TextEditor.show = (textBlock: go.GraphObject, diagram: go.Diagram, tool: go.Tool) => {
     if (!diagram || !diagram.div) return;
     if (!(textBlock instanceof go.TextBlock)) return;
+    if ((TextEditor as any).tool !== null) return; // Only one at a time.
 
     (TextEditor as any).tool = tool;  // remember the TextEditingTool for use by listeners
 

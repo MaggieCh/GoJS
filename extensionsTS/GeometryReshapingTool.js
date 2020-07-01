@@ -1,5 +1,5 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -20,12 +20,19 @@ var __extends = (this && this.__extends) || (function () {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "../release/go"], factory);
+        define(["require", "exports", "../release/go.js"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var go = require("../release/go");
+    /*
+    * This is an extension and not part of the main GoJS library.
+    * Note that the API for this class may change with any version, even point releases.
+    * If you intend to use an extension in production, you should copy the code to your own source directory.
+    * Extensions can be found in the GoJS kit under the extensions or extensionsTS folders.
+    * See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
+    */
+    var go = require("../release/go.js");
     /**
      * The GeometryReshapingTool class allows for a Shape's Geometry to be modified by the user
      * via the dragging of tool handles.
@@ -339,7 +346,6 @@ var __extends = (this && this.__extends) || (function () {
                 return;
             var locpt = shape.getLocalPoint(newPoint);
             var geo = shape.geometry.copy();
-            shape.desiredSize = new go.Size(NaN, NaN); // set the desiredSize once we've gotten our Geometry so we don't clobber
             var type = this.handle._typ;
             if (type === undefined)
                 return;
@@ -364,16 +370,17 @@ var __extends = (this && this.__extends) || (function () {
                     break;
             }
             var offset = geo.normalize(); // avoid any negative coordinates in the geometry
+            shape.desiredSize = new go.Size(NaN, NaN); // clear the desiredSize so Geometry can determine size
             shape.geometry = geo; // modify the Shape
             var part = shape.part; // move the Part holding the Shape
-            if (part !== null) {
-                part.ensureBounds();
-                if (!part.locationSpot.equals(go.Spot.Center)) { // but only if the locationSpot isn't Center
-                    // support the whole Node being rotated
-                    part.move(part.position.copy().subtract(offset.rotate(part.angle)));
-                }
-                this.updateAdornments(part); // update any Adornments of the Part
+            if (part === null)
+                return;
+            part.ensureBounds();
+            if (part.locationObject !== shape && !part.locationSpot.equals(go.Spot.Center)) { // but only if the locationSpot isn't Center
+                // support the whole Node being rotated
+                part.move(part.position.copy().subtract(offset.rotate(part.angle)));
             }
+            this.updateAdornments(part); // update any Adornments of the Part
             this.diagram.maybeUpdate(); // force more frequent drawing for smoother looking behavior
         };
         /**

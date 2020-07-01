@@ -5,7 +5,7 @@
   <title>Drawing Commands</title>
   <meta name="description" content="The DrawCommandHandler extension implements various commands for aligning and rotating objects and for handling arrow keys to select or shift." />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Copyright 1998-2019 by Northwoods Software Corporation. -->
+  <!-- Copyright 1998-2020 by Northwoods Software Corporation. -->
 
   <script src="../release/go.js"></script>
   <script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
@@ -19,6 +19,7 @@
       myDiagram = $(go.Diagram, "myDiagramDiv",  // create a Diagram for the DIV HTML element
         {
           commandHandler: new DrawCommandHandler(),  // defined in DrawCommandHandler.js
+          "commandHandler.archetypeGroupData": { isGroup: true },
           "undoManager.isEnabled": true  // enable undo & redo
         });
 
@@ -98,6 +99,10 @@
     <button onclick="myDiagram.commandHandler.rotate(90)">90°</button>
     <button onclick="myDiagram.commandHandler.rotate(-90)">-90°</button>
     <button onclick="myDiagram.commandHandler.rotate(180)">180°</button>
+    </br>
+    Z-Order:
+    <button onclick="myDiagram.commandHandler.pullToFront()">Pull to Front</button>
+    <button onclick="myDiagram.commandHandler.pushToBack()">Push to Back</button>
     </br>
     Arrow Mode:
     <input type="radio" name="arrow" id="move" onclick="arrowMode()" checked="checked">Move</input>

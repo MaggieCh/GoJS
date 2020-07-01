@@ -1,9 +1,18 @@
 'use strict';
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 
 // This file holds definitions of all standard shape figures -- string values for Shape.figure.
+// You do not need to load this file in order to use named Shape figure.
+
+// The following figures are built-in to the go.js library and thus do not need to be redefined:
+//   Rectangle, Square, RoundedRectangle, Border, Ellipse, Circle,
+//   TriangleRight, TriangleDown, TriangleLeft, TriangleUp, Triangle,
+//   LineH, LineV, None, BarH, BarV, MinusLine, PlusLine, XLine
+// If you need any of the other figures that are defined in this file, we suggest that you copy
+// just those definitions into your own code.  Do not load this file unless you really want to
+// define a lot of code that your app does not use and will not get garbage-collected.
 
 // The following functions and variables are used throughout this file:
 
@@ -262,24 +271,26 @@ var KAPPA = 4 * ((Math.sqrt(2) - 1) / 3);
 
 // PREDEFINED figures, built into the v2.0 library:
 
-go.Shape.defineFigureGenerator("Rectangle", function(shape, w, h) {  // predefined in 2.0
-  var geo = new go.Geometry(go.Geometry.Rectangle);
-  geo.startX = 0;
-  geo.startY = 0;
-  geo.endX = w;
-  geo.endY = h;
-  return geo;
-});
+// These first few are commented out due to optimizations in the built-in definitions.
 
-go.Shape.defineFigureGenerator("Square", function(shape, w, h) {  // predefined in 2.0
-  var geo = new go.Geometry(go.Geometry.Rectangle);
-  geo.startX = 0;
-  geo.startY = 0;
-  geo.endX = w;
-  geo.endY = h;
-  geo.defaultStretch = go.GraphObject.Uniform;
-  return geo;
-});
+//go.Shape.defineFigureGenerator("Rectangle", function(shape, w, h) {  // predefined in 2.0
+//  var geo = new go.Geometry(go.Geometry.Rectangle);
+//  geo.startX = 0;
+//  geo.startY = 0;
+//  geo.endX = w;
+//  geo.endY = h;
+//  return geo;
+//});
+
+//go.Shape.defineFigureGenerator("Square", function(shape, w, h) {  // predefined in 2.0
+//  var geo = new go.Geometry(go.Geometry.Rectangle);
+//  geo.startX = 0;
+//  geo.startY = 0;
+//  geo.endX = w;
+//  geo.endY = h;
+//  geo.defaultStretch = go.GraphObject.Uniform;
+//  return geo;
+//});
 
 go.Shape.setFigureParameter("RoundedRectangle", 0, new FigureParameter("CornerRounding", 5));
 go.Shape.defineFigureGenerator("RoundedRectangle", function(shape, w, h) {  // predefined in 2.0
@@ -308,28 +319,28 @@ go.Shape.defineFigureGenerator("RoundedRectangle", function(shape, w, h) {  // p
 
 go.Shape.defineFigureGenerator("Border", "RoundedRectangle");  // predefined in 2.0
 
-go.Shape.defineFigureGenerator("Ellipse", function(shape, w, h) {  // predefined in 2.0
-  var geo = new go.Geometry(go.Geometry.Ellipse);
-  geo.startX = 0;
-  geo.startY = 0;
-  geo.endX = w;
-  geo.endY = h;
-  geo.spot1 = GeneratorEllipseSpot1;
-  geo.spot2 = GeneratorEllipseSpot2;
-  return geo;
-});
+//go.Shape.defineFigureGenerator("Ellipse", function(shape, w, h) {  // predefined in 2.0
+//  var geo = new go.Geometry(go.Geometry.Ellipse);
+//  geo.startX = 0;
+//  geo.startY = 0;
+//  geo.endX = w;
+//  geo.endY = h;
+//  geo.spot1 = GeneratorEllipseSpot1;
+//  geo.spot2 = GeneratorEllipseSpot2;
+//  return geo;
+//});
 
-go.Shape.defineFigureGenerator("Circle", function(shape, w, h) {  // predefined in 2.0
-  var geo = new go.Geometry(go.Geometry.Ellipse);
-  geo.startX = 0;
-  geo.startY = 0;
-  geo.endX = w;
-  geo.endY = h;
-  geo.spot1 = GeneratorEllipseSpot1;
-  geo.spot2 = GeneratorEllipseSpot2;
-  geo.defaultStretch = go.GraphObject.Uniform;
-  return geo;
-});
+//go.Shape.defineFigureGenerator("Circle", function(shape, w, h) {  // predefined in 2.0
+//  var geo = new go.Geometry(go.Geometry.Ellipse);
+//  geo.startX = 0;
+//  geo.startY = 0;
+//  geo.endX = w;
+//  geo.endY = h;
+//  geo.spot1 = GeneratorEllipseSpot1;
+//  geo.spot2 = GeneratorEllipseSpot2;
+//  geo.defaultStretch = go.GraphObject.Uniform;
+//  return geo;
+//});
 
 go.Shape.defineFigureGenerator("TriangleRight", function(shape, w, h) {  // predefined in 2.0
   return new go.Geometry()

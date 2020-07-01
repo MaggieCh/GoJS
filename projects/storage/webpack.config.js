@@ -8,7 +8,7 @@ module.exports = {
         "gcs": './src/goCloudStorageFiles', // go cloud storage bundle
     },
     target: 'web',
-    devtool: "source-map",
+    // devtool: "source-map",
     resolve: {
         extensions: [".tsx", ".js", ".ts"]
     },
@@ -18,20 +18,24 @@ module.exports = {
         libraryTarget: 'var',
         library: 'gcs'
     },
-    externals:[
+    optimization: {
+        minimize: false
+    },
+    externals: [
         {
             'gojs': 'go'
         }
     ],
     module: {
-        rules: [ 
+        rules: [
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
             }
         ]
     },
-    plugins: [ 
-        ////new UglifyJSPlugin({ sourceMap: true }) 
+    plugins: [
+        new webpack.BannerPlugin("Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.")
+        ////new UglifyJSPlugin({ sourceMap: true })
     ]
 };

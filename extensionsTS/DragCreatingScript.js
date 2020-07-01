@@ -1,5 +1,5 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -20,13 +20,20 @@ var __extends = (this && this.__extends) || (function () {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "../release/go", "./DragCreatingTool"], factory);
+        define(["require", "exports", "../release/go.js", "./DragCreatingTool.js"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var go = require("../release/go");
-    var DragCreatingTool_1 = require("./DragCreatingTool");
+    /*
+    * This is an extension and not part of the main GoJS library.
+    * Note that the API for this class may change with any version, even point releases.
+    * If you intend to use an extension in production, you should copy the code to your own source directory.
+    * Extensions can be found in the GoJS kit under the extensions or extensionsTS folders.
+    * See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
+    */
+    var go = require("../release/go.js");
+    var DragCreatingTool_js_1 = require("./DragCreatingTool.js");
     var myDiagram;
     function init() {
         if (window.goSamples)
@@ -52,10 +59,10 @@ var __extends = (this && this.__extends) || (function () {
                 // use a different color each time
                 this.archetypeNodeData.color = go.Brush.randomColor();
                 // call the base method to do normal behavior and return its result
-                return DragCreatingTool_1.DragCreatingTool.prototype.insertPart.call(this, bounds);
+                return DragCreatingTool_js_1.DragCreatingTool.prototype.insertPart.call(this, bounds);
             };
             return CustomDragCreatingTool;
-        }(DragCreatingTool_1.DragCreatingTool));
+        }(DragCreatingTool_js_1.DragCreatingTool));
         // Add an instance of the custom tool defined in DragCreatingTool.js.
         // This needs to be inserted before the standard DragSelectingTool,
         // which is normally the third Tool in the ToolManager.mouseMoveTools list.

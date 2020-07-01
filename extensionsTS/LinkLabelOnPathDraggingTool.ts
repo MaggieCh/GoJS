@@ -1,8 +1,16 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 
-import * as go from '../release/go';
+/*
+* This is an extension and not part of the main GoJS library.
+* Note that the API for this class may change with any version, even point releases.
+* If you intend to use an extension in production, you should copy the code to your own source directory.
+* Extensions can be found in the GoJS kit under the extensions or extensionsTS folders.
+* See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
+*/
+
+import * as go from '../release/go.js';
 
 /**
  * The LinkLabelOnPathDraggingTool class lets the user move a label on a {@link Link} while keeping the label on the link's path.
@@ -16,7 +24,6 @@ export class LinkLabelOnPathDraggingTool extends go.Tool {
    * The label being dragged.
    */
   public label: go.GraphObject | null = null;
-  private _originalIndex: number = 0;
   private _originalFraction: number = 0.0;
 
   /**
@@ -70,7 +77,6 @@ export class LinkLabelOnPathDraggingTool extends go.Tool {
     this.startTransaction('Shifted Label');
     this.label = this.findLabel();
     if (this.label !== null) {
-      this._originalIndex = this.label.segmentIndex;
       this._originalFraction = this.label.segmentFraction;
     }
     super.doActivate();
@@ -97,7 +103,6 @@ export class LinkLabelOnPathDraggingTool extends go.Tool {
    */
   public doCancel(): void {
     if (this.label !== null) {
-      this.label.segmentIndex = this._originalIndex;
       this.label.segmentFraction = this._originalFraction;
     }
     super.doCancel();
@@ -123,24 +128,20 @@ export class LinkLabelOnPathDraggingTool extends go.Tool {
   }
 
   /**
-   * Save the label's {@link GraphObject#segmentIndex} and {@link GraphObject#segmentFraction}
+   * Save the label's {@link GraphObject#segmentFraction}
    * at the closest point to the mouse.
    */
   public updateSegmentOffset(): void {
     const lab = this.label;
     if (lab === null) return;
     const link = lab.part;
-    if (!(link instanceof go.Link)) return;
+    if (!(link instanceof go.Link) || link.path === null) return;
 
     const last = this.diagram.lastInput.documentPoint;
-    let idx = link.findClosestSegment(last);
-    idx = Math.min(Math.max(link.firstPickIndex, idx), link.lastPickIndex - 1);
-    const p1 = link.getPoint(idx);
-    const p2 = link.getPoint(idx + 1);
-    const total = Math.sqrt(p1.distanceSquaredPoint(p2));
-    const p = last.copy().projectOntoLineSegmentPoint(p1, p2);
-    const frac = Math.sqrt(p1.distanceSquaredPoint(p)) / total;
-    lab.segmentIndex = idx;
-    lab.segmentFraction = frac;
+    // find the fractional distance along the link path closest to this point
+    const path = link.path;
+    if (path.geometry === null) return;
+    const localpt = path.getLocalPoint(last);
+    lab.segmentFraction = path.geometry.getFractionForPoint(localpt);
   }
 }

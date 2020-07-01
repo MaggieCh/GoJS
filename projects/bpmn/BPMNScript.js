@@ -1,5 +1,5 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -20,15 +20,15 @@ var __extends = (this && this.__extends) || (function () {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "../../extensionsTS/DrawCommandHandler", "../../extensionsTS/Figures", "../../release/go", "./BPMNClasses"], factory);
+        define(["require", "exports", "../../extensionsTS/DrawCommandHandler.js", "../../extensionsTS/Figures.js", "../../release/go.js", "./BPMNClasses.js"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var DrawCommandHandler_1 = require("../../extensionsTS/DrawCommandHandler");
-    require("../../extensionsTS/Figures");
-    var go = require("../../release/go");
-    var BPMNClasses_1 = require("./BPMNClasses");
+    var DrawCommandHandler_js_1 = require("../../extensionsTS/DrawCommandHandler.js");
+    require("../../extensionsTS/Figures.js");
+    var go = require("../../release/go.js");
+    var BPMNClasses_js_1 = require("./BPMNClasses.js");
     // This file holds all of the JavaScript code specific to the BPMN.html page.
     var myDiagram;
     // Setup all of the Diagrams and what they need.
@@ -774,7 +774,7 @@ var __extends = (this && this.__extends) || (function () {
             model.setDataProperty(obj.data, 'isDefault', false);
             myDiagram.commitTransaction('setSequenceLinkConditionalFlow');
         }
-        var messageFlowLinkTemplate = $(BPMNClasses_1.PoolLink, // defined in BPMNClasses.js
+        var messageFlowLinkTemplate = $(BPMNClasses_js_1.PoolLink, // defined in BPMNClasses.js
         {
             routing: go.Link.Orthogonal, curve: go.Link.JumpGap, corner: 10,
             fromSpot: go.Spot.TopBottomSides, toSpot: go.Spot.TopBottomSides,
@@ -804,7 +804,7 @@ var __extends = (this && this.__extends) || (function () {
                 nodeTemplateMap: nodeTemplateMap,
                 linkTemplateMap: linkTemplateMap,
                 groupTemplateMap: groupTemplateMap,
-                commandHandler: new DrawCommandHandler_1.DrawCommandHandler(),
+                commandHandler: new DrawCommandHandler_js_1.DrawCommandHandler(),
                 // default to having arrow keys move selected nodes
                 'commandHandler.arrowKeyBehavior': 'move',
                 mouseDrop: function (e) {
@@ -814,12 +814,12 @@ var __extends = (this && this.__extends) || (function () {
                     if (!ok)
                         myDiagram.currentTool.doCancel();
                 },
-                linkingTool: new BPMNClasses_1.BPMNLinkingTool(),
-                relinkingTool: new BPMNClasses_1.BPMNRelinkingTool(),
+                resizingTool: new LaneResizingTool(),
+                linkingTool: new BPMNClasses_js_1.BPMNLinkingTool(),
+                relinkingTool: new BPMNClasses_js_1.BPMNRelinkingTool(),
                 'SelectionMoved': relayoutDiagram,
                 'SelectionCopied': relayoutDiagram
             });
-        myDiagram.toolManager.mouseDownTools.insertAt(0, new LaneResizingTool());
         myDiagram.addDiagramListener('LinkDrawn', function (e) {
             if (e.subject.fromNode.category === 'annotation') {
                 e.subject.category = 'annotation'; // annotation association
@@ -1082,11 +1082,11 @@ var __extends = (this && this.__extends) || (function () {
             if (this.adornedObject === null)
                 return new go.Size(MINLENGTH, MINBREADTH);
             var lane = this.adornedObject.part;
-            if (!(lane instanceof go.Group) || lane.containingGroup === null)
-                return new go.Size(MINLENGTH, MINBREADTH);
+            if (!(lane instanceof go.Group))
+                return go.ResizingTool.prototype.computeMinSize.call(this);
             // assert(lane instanceof go.Group && lane.category !== "Pool");
             var msz = computeMinLaneSize(lane); // get the absolute minimum size
-            if (this.isLengthening()) { // compute the minimum length of all lanes
+            if (lane.containingGroup !== null && this.isLengthening()) { // compute the minimum length of all lanes
                 var sz = computeMinPoolSize(lane.containingGroup);
                 msz.width = Math.max(msz.width, sz.width);
             }
@@ -1097,23 +1097,12 @@ var __extends = (this && this.__extends) || (function () {
             }
             return msz;
         };
-        LaneResizingTool.prototype.canStart = function () {
-            if (!go.ResizingTool.prototype.canStart.call(this))
-                return false;
-            // if this is a resize handle for a "Lane", we can start.
-            var diagram = this.diagram;
-            var handl = this.findToolHandleAt(diagram.firstInput.documentPoint, this.name);
-            if (handl === null || handl.part === null)
-                return false;
-            var ad = handl.part;
-            if (ad.adornedObject === null || ad.adornedObject.part === null)
-                return false;
-            return (ad.adornedObject.part.category === 'Lane');
-        };
         LaneResizingTool.prototype.resize = function (newr) {
             if (this.adornedObject === null)
                 return;
             var lane = this.adornedObject.part;
+            if (!(lane instanceof go.Group))
+                return go.ResizingTool.prototype.resize.call(this, newr);
             if (lane instanceof go.Group && lane.containingGroup !== null && this.isLengthening()) { // changing the length of all of the lanes
                 lane.containingGroup.memberParts.each(function (l) {
                     if (!(l instanceof go.Group))

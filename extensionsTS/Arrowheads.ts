@@ -1,8 +1,6 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
-
-import * as go from '../release/go';
 
 // These are the definitions for all of the predefined arrowheads.
 // You do not need to load this file in order to use arrowheads.
@@ -16,6 +14,8 @@ import * as go from '../release/go';
 //       $(go.Shape),
 //       $(go.Shape, { toArrow: "Zigzag" })
 //     );
+
+import * as go from '../release/go.js';
 
 go.Shape.defineArrowheadGeometry('Standard', 'F1 m 0,0 l 8,4 -8,4 2,-4 z');
 go.Shape.defineArrowheadGeometry('Backward', 'F1 m 8,0 l -2,4 2,4 -8,-4 z');

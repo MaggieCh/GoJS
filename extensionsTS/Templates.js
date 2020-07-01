@@ -1,5 +1,5 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 (function (factory) {
     if (typeof module === "object" && typeof module.exports === "object") {
@@ -7,17 +7,17 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "../release/go"], factory);
+        define(["require", "exports", "../release/go.js"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var go = require("../release/go");
     // These are the definitions for all of the predefined templates and tool archetypes.
     // You do not need to load this file in order to use the default templates and archetypes.
     // Although we have tried to provide definitions here that are faithful to how they
     // are actually implemented, there may be some differences from what is in the library.
-    // Caution: these may change in version 2.0.
+    // Caution: these may change in a future version.
+    var go = require("../release/go.js");
     // Set up the default templates that each Diagram starts off with.
     function setupDiagramTemplates(diagram) {
         // Node Templates

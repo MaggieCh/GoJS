@@ -1,6 +1,14 @@
 "use strict";
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
+*/
+
+/*
+* This is an extension and not part of the main GoJS library.
+* Note that the API for this class may change with any version, even point releases.
+* If you intend to use an extension in production, you should copy the code to your own source directory.
+* Extensions can be found in the GoJS kit under the extensions or extensionsTS folders.
+* See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
 */
 
 /**
@@ -8,7 +16,7 @@
 * @extends Tool
 * @class
 * This GeometryReshapingTool class allows for a Shape's Geometry to be modified by the user
-* via the dragging of tool handles. 
+* via the dragging of tool handles.
 * This does not handle Links, whose routes should be reshaped by the LinkReshapingTool.
 * The {@link #reshapeObjectName} needs to identify the named {@link Shape} within the
 * selected {@link Part}.
@@ -47,7 +55,7 @@ go.Diagram.inherit(GeometryReshapingTool, go.Tool);
 /*
 * A small GraphObject used as a reshape handle for each segment.
 * The default GraphObject is a small blue diamond.
-* @name GeometryReshapingTool#handleArchetype 
+* @name GeometryReshapingTool#handleArchetype
 * @function.
 * @return {GraphObject}
 */
@@ -311,9 +319,9 @@ GeometryReshapingTool.prototype.doMouseUp = function() {
 */
 GeometryReshapingTool.prototype.reshape = function(newPoint) {
   var shape = this.adornedShape;
+  if (shape === null || shape.geometry === null) return;
   var locpt = shape.getLocalPoint(newPoint);
   var geo = shape.geometry.copy();
-  shape.desiredSize = new go.Size(NaN, NaN); // set the desiredSize once we've gotten our Geometry so we don't clobber
   var type = this.handle._typ;
   if (type === undefined) return;
   var fig = geo.figures.elt(this.handle._fig);
@@ -325,10 +333,11 @@ GeometryReshapingTool.prototype.reshape = function(newPoint) {
     case 3: seg.point2X = locpt.x; seg.point2Y = locpt.y; break;
   }
   var offset = geo.normalize();  // avoid any negative coordinates in the geometry
+  shape.desiredSize = new go.Size(NaN, NaN); // clear the desiredSize so Geometry can determine size
   shape.geometry = geo;  // modify the Shape
   var part = shape.part;  // move the Part holding the Shape
   part.ensureBounds();
-  if (!part.locationSpot.equals(go.Spot.Center)) {  // but only if the locationSpot isn't Center
+  if (part.locationObject !== shape && !part.locationSpot.equals(go.Spot.Center)) {  // but only if the locationSpot isn't Center
     // support the whole Node being rotated
     part.move(part.position.copy().subtract(offset.rotate(part.angle)));
   }

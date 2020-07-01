@@ -1,5 +1,5 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 (function (factory) {
     if (typeof module === "object" && typeof module.exports === "object") {
@@ -7,12 +7,19 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "../release/go"], factory);
+        define(["require", "exports", "../release/go.js"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var go = require("../release/go");
+    /*
+    * This is an extension and not part of the main GoJS library.
+    * Note that the API for this class may change with any version, even point releases.
+    * If you intend to use an extension in production, you should copy the code to your own source directory.
+    * Extensions can be found in the GoJS kit under the extensions or extensionsTS folders.
+    * See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
+    */
+    var go = require("../release/go.js");
     // HTML + JavaScript context menu, made with HTMLInfo
     // This file exposes one instance of HTMLInfo, window.myHTMLLightBox
     // see also LightBoxContextMenu.css and /samples/htmlLightBoxContextMenu.html
@@ -49,8 +56,8 @@
                 isVisible: function (diagram) { return diagram.commandHandler.canDeleteSelection(); }
             }, {
                 text: 'Paste',
-                command: function (diagram) { diagram.commandHandler.pasteSelection(diagram.lastInput.documentPoint); },
-                isVisible: function (diagram) { return diagram.commandHandler.canPasteSelection(); }
+                command: function (diagram) { diagram.commandHandler.pasteSelection(diagram.toolManager.contextMenuTool.mouseDownPoint); },
+                isVisible: function (diagram) { return diagram.commandHandler.canPasteSelection(diagram.toolManager.contextMenuTool.mouseDownPoint); }
             }, {
                 text: 'Select All',
                 command: function (diagram) { diagram.commandHandler.selectAll(); },

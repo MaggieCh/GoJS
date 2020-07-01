@@ -1,5 +1,5 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 (function (factory) {
     if (typeof module === "object" && typeof module.exports === "object") {
@@ -7,13 +7,20 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "../release/go", "./NodeLabelDraggingTool"], factory);
+        define(["require", "exports", "../release/go.js", "./NodeLabelDraggingTool.js"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var go = require("../release/go");
-    var NodeLabelDraggingTool_1 = require("./NodeLabelDraggingTool");
+    /*
+    * This is an extension and not part of the main GoJS library.
+    * Note that the API for this class may change with any version, even point releases.
+    * If you intend to use an extension in production, you should copy the code to your own source directory.
+    * Extensions can be found in the GoJS kit under the extensions or extensionsTS folders.
+    * See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
+    */
+    var go = require("../release/go.js");
+    var NodeLabelDraggingTool_js_1 = require("./NodeLabelDraggingTool.js");
     var myDiagram;
     function init() {
         if (window.goSamples)
@@ -30,7 +37,7 @@
                 'undoManager.isEnabled': true
             });
         // install the NodeLabelDraggingTool as a "mouse move" tool
-        myDiagram.toolManager.mouseMoveTools.insertAt(0, new NodeLabelDraggingTool_1.NodeLabelDraggingTool());
+        myDiagram.toolManager.mouseMoveTools.insertAt(0, new NodeLabelDraggingTool_js_1.NodeLabelDraggingTool());
         // when the document is modified, add a "*" to the title and enable the "Save" button
         myDiagram.addDiagramListener('Modified', function (e) {
             var button = document.getElementById('SaveButton');

@@ -1,7 +1,11 @@
 "use strict";
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
+
+// This is the definitions of the predefined text editor used by TextEditingTool
+// when you set or bind TextBlock.editable to true.
+// You do not need to load this file in order to use in-place text editing.
 
 // HTML + JavaScript text editor menu, made with HTMLInfo
 // This is a re-implementation of the default text editor
@@ -75,9 +79,12 @@
 
   TextEditor.mainElement = textarea; // to reference it more easily
 
+  TextEditor.tool = null; // Initialize
+
   // used to be in doActivate
   TextEditor.show = function(textBlock, diagram, tool) {
     if (!(textBlock instanceof go.TextBlock)) return;
+    if (TextEditor.tool !== null) return; // Only one at a time.
 
     TextEditor.tool = tool;  // remember the TextEditingTool for use by listeners
 
